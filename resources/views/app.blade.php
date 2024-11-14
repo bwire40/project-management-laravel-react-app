@@ -12,6 +12,9 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
+
+
+    {{-- -Directives --}}
     @routes {{-- directive for generating registered rotes and make acvailable in react components --}}
     @viteReactRefresh {{-- reloads browser when changes happen --}}
     @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])

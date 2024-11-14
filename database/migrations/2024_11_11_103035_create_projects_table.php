@@ -13,6 +13,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('projects', function (Blueprint $table) {
+
+            // table columns
             $table->id();
             $table->string("name");
             $table->longText("description")->nullable();
