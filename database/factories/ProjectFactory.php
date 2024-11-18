@@ -17,10 +17,10 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            //define fake fields for projects
-            "name" => fake()->sentence(),
+            //define fake fields for the project
+            "name" => fake()->sentence(), //generates a sentence
             "description" => fake()->realText(),
-            'due_date' => fake()->dateTimeBetween('now', '+1 1year'),
+            'due_date' => fake()->dateTimeBetween('now', '+1 year'),
             "status" => fake()->randomElement(['pending', 'in_progress', 'completed']),
             "image_path" => fake()->imageUrl(),
             "created_by" => 1,

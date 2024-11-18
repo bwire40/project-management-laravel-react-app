@@ -10,10 +10,11 @@ use Inertia\Inertia;
 
 Route::redirect('/', '/dashboard');
 
-// create a middleware group routes accessed when user is authenticated nad verified
+// create a middleware group routes accessed when user is authenticated and verified
 Route::middleware(['auth', 'verified'])->group(function () {
     // routes
     Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
+
 
     Route::resource('project', ProjectController::class);
     Route::resource('task', TaskController::class);

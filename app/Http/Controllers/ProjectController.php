@@ -15,10 +15,11 @@ class ProjectController extends Controller
     public function index()
     {
         //
-        $query = Project::query();
+        $query = Project::query(); //get out projects from databse
         // dd($query);
-        $projects = $query->paginate(10)->onEachSide(1);
-        return inertia('Profile/Index', [
+        $projects = $query->paginate(10); //get 10 records and how many links on current page
+
+        return inertia('Project/Index', [
             "projects" => ProjectResource::collection($projects),
         ]);
     }
@@ -52,7 +53,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        //show component
+        // return
     }
 
     /**

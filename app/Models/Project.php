@@ -11,6 +11,9 @@ class Project extends Model
     use HasFactory;
 
 
+
+    // define relationships
+
     public function tasks()
     {
         return $this->hasMany(Task::class);
@@ -19,7 +22,7 @@ class Project extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-    public function updateddBy()
+    public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
