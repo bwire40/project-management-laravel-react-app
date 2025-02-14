@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import React from "react";
 import { Badge, Checkbox, Table } from "flowbite-react";
 import Pagination from "@/Components/Pagination";
@@ -7,7 +7,27 @@ import {
  PROJECT_STATUS_CLASS_MAP,
  PROJECT_STATUS_TEXT_MAP,
 } from "@/constants.js";
-const Index = ({ projects }) => {
+import TextInput from "@/Components/TextInput";
+import SelectInput from "@/Components/SelectInput";
+const Index = ({ projects, queryParams = null }) => {
+ // impelemnt filtering
+ queryParams = queryParams || {};
+
+ const searchFieldChanged = (name, value) => {
+  if (value) {
+   queryParams[name] = value;
+  } else {
+   delete queryParams[name];
+  }
+
+  router.get(route("project.index"), queryParams);
+ };
+
+ const onKeyPress = (name, e) => {
+  if (e.key !== "Enter") return;
+  searchFieldChanged(name, e.target.value);
+ };
+ //  console.log(projects);
  return (
   <AuthenticatedLayout
    header={
@@ -25,13 +45,15 @@ const Index = ({ projects }) => {
      </h2>
      <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
       <div className="p-6 text-gray-900 dark:text-gray-100">
+       {/* {projects.data} */}
        <div className="overflow-x-auto">
+        {/* flobite table */}
         <Table hoverable>
          <Table.Head>
           <Table.HeadCell className="p-4">
            <Checkbox />
           </Table.HeadCell>
-          <Table.HeadCell>ID</Table.HeadCell>
+          <Table.HeadCell className="font-bold">ID</Table.HeadCell>
           <Table.HeadCell>Image</Table.HeadCell>
           <Table.HeadCell>Name</Table.HeadCell>
           <Table.HeadCell>Status</Table.HeadCell>
@@ -39,6 +61,38 @@ const Index = ({ projects }) => {
           <Table.HeadCell>Due Date</Table.HeadCell>
           <Table.HeadCell>Created By</Table.HeadCell>
           <Table.HeadCell>Actions</Table.HeadCell>
+         </Table.Head>
+
+         {/* filtering header */}
+         <Table.Head>
+          <Table.HeadCell className="p-4">{/* <Checkbox /> */}</Table.HeadCell>
+          <Table.HeadCell className="font-bold"></Table.HeadCell>
+          <Table.HeadCell></Table.HeadCell>
+          <Table.HeadCell>
+           <TextInput
+            defaultValue={queryParams.name}
+            className="w-full"
+            placeholder="Project Name"
+            onBlur={(e) => searchFieldChanged("name", e.target.value)}
+            onKeyPress={(e) => onKeyPress("name", e)}
+           />
+          </Table.HeadCell>
+          <Table.HeadCell>
+           <SelectInput
+            defaultValue={queryParams.status}
+            className="w-full"
+            onChange={(e) => searchFieldChanged("status", e.target.value)}
+           >
+            <option value="">Select Status</option>
+            <option value="pending">pending</option>
+            <option value="in_progress">In progress</option>
+            <option value="completed">Completed</option>
+           </SelectInput>
+          </Table.HeadCell>
+          <Table.HeadCell></Table.HeadCell>
+          <Table.HeadCell></Table.HeadCell>
+          <Table.HeadCell></Table.HeadCell>
+          <Table.HeadCell></Table.HeadCell>
          </Table.Head>
          {/* table body */}
          <Table.Body className="divide-y">
@@ -50,7 +104,7 @@ const Index = ({ projects }) => {
             <Table.Cell className="p-4">
              <Checkbox />
             </Table.Cell>
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+            <Table.Cell className="whitespace-nowrap font-bold text-gray-900 dark:text-white">
              {project.id}
             </Table.Cell>
             <Table.Cell>
@@ -83,6 +137,7 @@ const Index = ({ projects }) => {
             <Table.Cell>{project.due_date}</Table.Cell>
             <Table.Cell>{project.createdBy.name}</Table.Cell>
             <Table.Cell>
+             {/* inertia js link */}
              <Link
               href={route("project.edit", project.id)}
               className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 mx-1"
@@ -100,7 +155,7 @@ const Index = ({ projects }) => {
           ))}
          </Table.Body>
         </Table>
-        {/* pagination */}
+        {/* pagination compponent goes here */}
         <Pagination links={projects.meta.links} />
        </div>
       </div>

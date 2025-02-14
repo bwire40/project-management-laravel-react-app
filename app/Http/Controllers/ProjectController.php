@@ -16,11 +16,21 @@ class ProjectController extends Controller
     {
         //
         $query = Project::query(); //get out projects from databse
+
+        // get query parameters, implement filtering
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("status"));
+        }
+        if (request("status")) {
+            $query->where("status", request("status"));
+        }
+
         // dd($query);
-        $projects = $query->paginate(10); //get 10 records and how many links on current page
+        $projects = $query->paginate(10)->onEachSide(1); //get 10 records and how many links on current page
 
         return inertia('Project/Index', [
             "projects" => ProjectResource::collection($projects),
+            'queryParams' => request()->query() ?: null
         ]);
     }
 
