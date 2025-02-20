@@ -32,7 +32,7 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app/private'),
+            'root' => 'H:\My Drive\project-backups',
             'serve' => true,
             'throw' => false,
         ],
